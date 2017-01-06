@@ -1,0 +1,99 @@
+@import 'validation.less';
+@import 'mixins.less';
+// 全局重写
+* {
+	margin: 0;
+	padding: 0;
+	font-size: @def-font-size;
+	box-sizing: border-box;
+	outline: none;
+
+	/* 占位符 */
+	&::-webkit-input-placeholder {
+
+		/* WebKit browsers */
+		color: @def-placeholder-color !important;
+	}
+	&:-moz-placeholder {
+
+		/* Mozilla Firefox 4 to 18 */
+		color: @def-placeholder-color !important;
+	}
+	&::-moz-placeholder {
+
+		/* Mozilla Firefox 19+ */
+		color: @def-placeholder-color !important;
+	}
+	&:-ms-input-placeholder {
+
+		/* Internet Explorer 10+ */
+		color: @def-placeholder-color !important;
+	}
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	font-family: Helvetica, Verdana, Arial, 'Microsoft YaHei', '微软雅黑', SimSun, '宋体', sans-serif;
+	
+	
+	line-height: @def-line-height;
+	text-align: left;
+	color: @def-font-color;
+	background-color: @color-white;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-position: 0 0;
+}
+a {
+	cursor: pointer;
+	color: @def-font-color;
+
+	&:link {
+		text-decoration: none;
+	}
+	&:visited {
+		text-decoration: none;
+	}
+	&:hover {
+		color: @def-font-color-hover;
+		text-decoration: none;
+	}
+	&:active {
+		color: @def-font-color-active;
+		text-decoration: none;
+	}
+}
+th, td {
+	font-size: 1.2rem;
+	line-height: @def-line-height;
+	color: @def-font-color;
+}
+form, ul, li {
+	margin: 0;
+	padding: 0;
+}
+ul, li {
+	list-style-type: none;
+}
+ul {
+	display: block;
+}
+img {
+	border: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-size: 1.2rem;
+	font-weight: 400;
+}
+html{
+	font-size: 62.5%;//基准是10px
+}
+html,body{
+	height:100%;
+	
+	width:100%;
+}
+body{
+	font-size:1.4rem;
+}
