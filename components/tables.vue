@@ -2,6 +2,18 @@
 .tables {
     width:100%;   
     background: #f4f5f7;
+    margin-bottom: 51px;
+    .no-more {
+        margin: auto;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        top: 0;
+        width: 100%;
+        height: 25px;
+        text-align: center;
+    }
     ol {
         width:100%;
         padding: 5px 0px;
@@ -73,6 +85,34 @@
                 text-align: center;
                 font-size: 1.8rem;
                 color:#f30e8f;
+                .i-down{
+                    width:6px;
+                    height:9px;
+                    background:url(./icon-down.png) no-repeat left top;
+                    background-size:contain;
+                    display:inline-block;
+                }
+                .i-up{
+                    width:6px;
+                    height:9px;
+                    background:url(./icon-up.png) no-repeat left top;
+                    background-size:contain;
+                    display:inline-block;
+                }
+                .i-steady {
+                     width:6px;
+                    height:9px;
+                    display:inline-block;
+                    color:#969ba3;
+                }
+                .text-down{
+                    color:#12a812;
+                    display:inline-block;
+                }
+                 .text-up{
+                    color:#ff3000;
+                    display:inline-block;
+                }
             }
         }
     }
@@ -81,81 +121,92 @@
 <template>
 
     <section class="tables">
-        <ol>
-            <li v-for="item in list">
+        <div v-if="Loading.isShow" class="loading-wrap">
+            <span class="loading"></span>
+            {{Loading.text}}
+        </div>
+        <ol v-if="Loading.hasData">
+            <li v-for="item in Lists">
                 <div class="details">
                     <p>
-                        <span class="item name">{{item.GoodsName}}</span>
-                        <span class="item Grade">{{item.Texture}}</span>
+                        <span class="item name">{{item.goodsName}}</span>
+                        <span class="item Grade">{{item.texture}}</span>
                     </p>
                     <p>
-                        <span class="item producer">{{item.Producer}}</span>
-                        <span class="item texture" v-if="item.Quality==='1'">正品</span>
-                        <span class="item texture" v-else-if="item.Quality==='2'">让步材</span>
-                        <span class="item texture" v-else-if="item.Quality==='3'">大尾卷</span>
-                        <span class="item texture" v-else-if="item.Quality==='4'">小尾卷</span>
-                        <span class="item date">{{item.CreateTime}}</span>
+                        <span class="item producer">{{item.producer}}</span>
+                        <span class="item texture" v-if="item.quality===1">正品</span>
+                        <span class="item texture" v-else-if="item.quality===2">让步材</span>
+                        <span class="item texture" v-else-if="item.quality===3">大尾卷</span>
+                        <span class="item texture" v-else-if="item.quality===4">小尾卷</span>
+                        <span class="item date">{{item.createTime.split(' ')[0]}}</span>
                     </p>
                 </div>
                 <div class="price">
-                    &yen;{{item.UnitPrice}}
+                    &yen;{{item.unitPrice}}<br/>
+                    <span v-if="item.unitPriceFloat===1" class="i-down">
+                        
+                    </span>
+                    <i class="text-down" v-if="item.unitPriceFloat===1">跌 &yen;{{item.priceSpread}}</i>
+                    
+                    <span v-if="item.unitPriceFloat===2" class="i-up">
+                        
+                    </span>
+                    <i class="text-up" v-if="item.unitPriceFloat===2">涨 &yen;{{item.priceSpread}}</i>
+                    <span v-if="item.unitPriceFloat===0" class="i-steady">-</span>
                 </div>
             </li>
         </ol>
+        <div v-else class="no-more">
+            没有更多数据了
+        </div>
     </section>
-   <!-- <table class="tables" cellpadding="0" cellspacing="0">
-    <thead>
-        <tr>
-            <th>品名</th>
-            <th>厂家</th>
-            <th>牌号</th>
-            <th>材质</th>
-            <th>单价</th>
-            <th>时间</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="item in list">
-            <td>{{item.name}}</td>
-            <td>{{item.producer}}</td>
-            <td>{{item.grade}}</td>
-            <td>{{item.texture}}</td>
-            <td class="price">{{item.price}}</td>
-            <td>{{item.}}</td>
-        </tr>
-       
-    </tbody>
-       
-    </table>
-    -->
+
 </template>
 <script>
-   
+import { mapActions,mapGetters } from 'vuex'
     export default {
-        data(){
-            return {
-                list:[],
-                searchKey: {
-                    key: 0
-                }
-            };
-        },
+       
+       computed: mapGetters(['Lists','Searchs','Loading']),
        mounted(){
-        this.getList();
+          this.getList()
        },
        methods: {
         getList(){
-        if (this.$route.query && this.$route.query.key) {
-                this.searchKey.key = this.$route.query.key;
+            //console.log(typeof this.$route.query.key)
+            if (this.$route.query && !this.$route.query.key ) {
+                //取向硅钢
+                this.$store.dispatch('changeType',1);
+            } else if(this.$route.query && this.$route.query.key=="1") {
+                console.log('1')
+                this.$store.dispatch('changeType',1);
+            } else if(this.$route.query && this.$route.query.key=="2")  {
+                console.log('2')
+                this.$store.dispatch('changeType',2);
             }
-            this.$http.get('/api/test/list?key='+this.searchKey.key)
+            
+            this.$store.dispatch('changeText',"");
+            this.$store.dispatch('getLists'); 
+             
+            
+            /*this.$http.get('/api/users/list?key='+this.searchKey.key+'&textFull='+this.searchKey.textFull)
                 .then((response)=>{
-                    this.list = response.data;
-                    console.log(typeof response.data);
+                    this.loading.isShow=false;
+                    this.list =response.data;
+                    //console.log(response.data);
+                    if(this.list==null){
+                        this.hasData=false;
+                    } else if(this.list.length==0) {
+                        this.hasData=false;
+                    } else{
+                        this.hasData=true;
+                    }
+                    //searchKey:1取向2无取
                     //quality:1正品 2让步 3大尾卷 4小尾卷
                 }, (response)=>{
+                    this.loading.isShow=false;
+                    this.hasData=false;
                     console.log(response.data);
-                });
+                });*/
         }
        },
        watch:{

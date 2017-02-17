@@ -97,3 +97,59 @@ html,body{
 body{
 	font-size:1.4rem;
 }
+.loading-wrap{
+	display:-webkit-box;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	text-align:center;
+	height:40px
+}
+.loading{
+	width:20px;
+	height:20px;
+	display:block;
+	background:url(../images/loading_sprite.png);
+	-webkit-background-size:auto 20px;
+	animation:am-rotate 1s steps(12) infinite;
+	-webkit-animation:am-rotate 1s steps(12) infinite;
+}
+am-rotate{
+	from{background-position:0 0}
+	to{background-position:-240px 0}
+}
+@-webkit-keyframes am-rotate{
+	from{background-position:0 0}
+	to{background-position:-240px 0}
+}
+am-rotate2{
+	from{
+		transform:rotate(-7deg);
+		-ms-transform:rotate(-7deg);
+		-moz-transform:rotate(-7deg);
+		-webkit-transform:rotate(-7deg);
+		-o-transform:rotate(-7deg);
+	}
+	to{
+		transform:rotate(7deg);
+		-ms-transform:rotate(7deg);
+		-moz-transform:rotate(7deg);
+		-webkit-transform:rotate(7deg);
+		-o-transform:rotate(7deg);
+	}
+}
+@-webkit-keyframes am-rotate2{
+	from{
+		transform:rotate(-7deg);
+		-ms-transform:rotate(-7deg);
+		-moz-transform:rotate(-7deg);
+		-webkit-transform:rotate(-7deg);
+		-o-transform:rotate(-7deg);
+	}
+	to{
+		transform:rotate(7deg);
+		-ms-transform:rotate(7deg);
+		-moz-transform:rotate(7deg);
+		-webkit-transform:rotate(7deg);
+		-o-transform:rotate(7deg);
+	}
+}

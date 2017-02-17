@@ -1,4 +1,8 @@
 <style lang="less" scoped>
+.phone-wrapper {
+    height: 51px;
+    width:100%;
+}
 .phone-banner {
     width:100%;   
     background: #3090fe;
@@ -18,6 +22,8 @@
         margin-right: 1.2rem;
         position: relative;
         top:4px;
+       animation:am-rotate2 300ms steps(12) infinite;
+       -webkit-animation:am-rotate2 300ms steps(12) infinite;
    }
    .phone-number {
 
@@ -25,26 +31,56 @@
        vertical-align: middle;
         color:#fff;
         height:1.5rem;
-        &:after {
-            content:"021-62580630";
-            position:relative;
-            top:0px;
-            font-size:1.8rem;
-        }
+        font-size:1.8rem;
+        
    }
 }
 </style>
 <template>
-    <section class="phone-banner">
-        
-        <a class="phone-number" href="tel:021-62580630"><i class="icon"></i></a>
+    <section class="phone-wrapper">
+        <section class="phone-banner">
+
+            <a class="phone-number" v-bind:href="href_"><i class="icon"></i>{{phone}}</a>
+        </section>
     </section>
+
     
     
 </template>
 <script>
-   
+import { mapActions,mapGetters } from 'vuex'   
     export default {
-       
+        data () {
+            return {
+                phone: "13585615054",
+                href_: "tel:13585615054"
+            }
+        },
+       computed: mapGetters(['Searchs']),
+       mounted () {
+            this.differentPhoneNumber()
+       },
+       methods: {
+            differentPhoneNumber () {
+                
+                if(this.$store.state.search.type==2) {
+                    this.phone = '15801718349'
+                    this.href_ = 'tel:15801718349'
+                } else {
+                    this.phone = '13585615054'
+                    this.href_ = 'tel:13585615054'
+                }
+            }
+       },
+       watch:{
+            Searchs:{
+                handler:function() {
+                // 对数据变化作出响应...
+                
+                this.differentPhoneNumber();
+            },
+            deep: true
+        }
+       }
     }
 </script>
